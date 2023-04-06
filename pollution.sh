@@ -1,0 +1,10 @@
+cd /
+cd /home/pi/Pollution_Sensing_IOT/
+rm sensordata/bmedata/*
+rm sensordata/poldata/*
+rm sensordata/mpudata/*
+rm sensordata/gpsdata/*
+rm sensordata/image/*
+#rm sensordata/jiodata/*
+python main_script.py
+cd /
