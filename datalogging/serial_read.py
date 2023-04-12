@@ -8,8 +8,8 @@ import os
 import shutil
 import time
 
-
-
+iggy piggy
+address_prefix = '/home/pi/Pollution_Sensing_IOT/sensordata/'
 #name of the file to which sensor data will be saved
 if os.path.exists("myfile.txt"):
   os.remove("myfile.txt") # one file at a time
@@ -17,34 +17,52 @@ if os.path.exists("myfile.txt"):
 
 #to get accel-sensor values from terminal string 
 def get_acc(acc_values):
-	accel = re.findall(r'-*\d+', acc_values)
-	return accel
+    accel = re.findall(r'-*\d+', acc_values)
+    return accel
 
 
 #returns list of gyroscope values
 def get_gyro(gyr_values):
-	gyr = re.findall(r'-*\d+', gyr_values)
-	return gyr
-	
+    gyr = re.findall(r'-*\d+', gyr_values)
+    return gyr
+    
 #returns list of magnetometer values
 def get_Magn(Magn_values):
-	mgn = re.findall(r'-*\d+', Magn_values)
-	return mgn
+    mgn = re.findall(r'-*\d+', Magn_values)
+    return mgn
 
 #return values of pressure, Temprature, and Humidity sensor readings
 def get_pth(pth_values):
-	pth = re.findall(r"[-+]?(?:\d*\.\d+|\d+)", pth_values)
-	return pth
+    pth = re.findall(r"[-+]?(?:\d*\.\d+|\d+)", pth_values)
+    return pth
 
 
 col_val = "Timestamp,Acc_x,Acc_Y,Acc_Z,Gyro_X,Gyro_Y,Gyro_Z,Magn_X,Magn_Y,Magn_Z,Pressure,Temprature,Humidity"
-figg="myfile"+datetime.now().strftime("%d_%m_%Y_%H%M%S")+".txt"
-datafile = open(figg,"a")
+figg=address_prefix + "sensortile/"+datetime.now().strftime("%d_%m_%Y_%H%M%S")+".txt"
+try:
+    datafile = open(figg,"a")
+except:
+    command = "mkdir -p "+address_prefix + "sensortile/"
+    print(command)
+    os.system(command)
+    datafile = open(figg,"a")
 datafile.write(col_val)
 
 Tmstmp = time.time()
-#ser = serial.Serial('COM5',1152000)
-ser = serial.Serial('/dev/ttyACM0',115200) #name of the serial port and buad rate 
+s_try=0
+while s_try<13:
+    try:
+        s_address='/dev/ttyACM0'
+        #s_address='COM5' #for testing directly with computer
+        ser = serial.Serial(s_address,115200) #name of the serial port and buad rate
+        break
+    except:
+        print("Not able to detect Serial device at "+s_address)
+        print("Please check connection to Sensortile")
+        print("Retrying in 5 Seconds")
+        time.sleep(5) #sleep for 5 seconds
+        s_try=s_try+1
+        continue
 while True:
     read_serial = ser.readline().strip()
     #list_items = []
@@ -60,12 +78,12 @@ while True:
         datafile.close()
         continue
     if(read_serial[0:5] == b'ACC_X'):
-        #print("aac trigger")
+        #print("aac trigger")u
         values = get_acc(read_serial.decode("utf-8"))
         #print(values)
         datafile = open(figg,"a")
         for i in values:
-        	datafile.write(i+",")
+            datafile.write(i+",")
         datafile.close()
         
     if(read_serial[0:5] == b'GYR_X'):
@@ -73,7 +91,7 @@ while True:
         values = get_gyro(read_serial.decode("utf-8"))
         datafile = open(figg,"a")
         for i in values:
-        	datafile.write(i+",")
+            datafile.write(i+",")
 
         datafile.close()
         
@@ -82,7 +100,7 @@ while True:
         values = get_Magn(read_serial.decode("utf-8"))
         datafile = open(figg,"a")
         for i in values:
-        	datafile.write(i+",")
+            datafile.write(i+",")
         datafile.close()
     
     if(read_serial[0:5] == b'PRESS'):
@@ -90,7 +108,7 @@ while True:
         values = get_pth(read_serial.decode("utf-8"))
         datafile = open(figg,"a")
         for i in values:
-        	datafile.write(i+",")
+            datafile.write(i+",")
         datafile.close()
         
         

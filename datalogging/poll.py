@@ -149,20 +149,20 @@ def main():
             print(read_serial[2:4])
             if (len(read_serial) < 10):
                 continue
-            if(read_serial[2:4] == 'TS'):
+            if(read_serial[2:4] == b'TS'):
                 get_ts_uid(read_serial)
                 continue
-            if(read_serial[2:4] == 'PM'):
+            if(read_serial[2:4] == b'PM'):
                 writepol(read_serial)
                 continue
-            if(read_serial[2:5] == 'LAT'):
+            if(read_serial[2:5] == b'LAT'):
                 writegps(read_serial)
                 continue
-            if(read_serial[2:4] == 'Pr'):
+            if(read_serial[2:4] == b'Pr'):
                 print("mpuread")
                 #writebme(read_serial)
                 continue
-            if(read_serial[2:4] == 'AX'):
+            if(read_serial[2:4] == b'AX'):
                 print("mpuread")
                 writempu(read_serial)
                 continue
