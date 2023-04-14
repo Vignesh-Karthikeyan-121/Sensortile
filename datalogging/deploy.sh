@@ -1,1 +1,5 @@
-python3 /home/pi/Desktop/Sensortile_PVS/datalogging/serial_read.py || {echo "Sensortile logging failed"}
+python3 /home/pi/Desktop/Sensortile_PVS/datalogging/serial_read.py &
+python3 /home/pi/Desktop/Sensortile_PVS/datalogging/poll.py
+
+
+

@@ -8,7 +8,7 @@ import os
 import shutil
 import time
 
-iggy piggy
+
 address_prefix = '/home/pi/Pollution_Sensing_IOT/sensordata/'
 #name of the file to which sensor data will be saved
 if os.path.exists("myfile.txt"):
@@ -38,7 +38,7 @@ def get_pth(pth_values):
 
 
 col_val = "Timestamp,Acc_x,Acc_Y,Acc_Z,Gyro_X,Gyro_Y,Gyro_Z,Magn_X,Magn_Y,Magn_Z,Pressure,Temprature,Humidity"
-figg=address_prefix + "sensortile/"+datetime.now().strftime("%d_%m_%Y_%H%M%S")+".txt"
+figg=address_prefix + "sensortile/"+datetime.now().strftime("%Y-%m-%d %H:%M:%S")+"stile"+".csv"
 try:
     datafile = open(figg,"a")
 except:
@@ -49,29 +49,44 @@ except:
 datafile.write(col_val)
 
 Tmstmp = time.time()
+##this part of code tries to look for a valid serial port,
+#if not found it tries 12 times with 5 second intervals and then exits raising system exception
+
 s_try=0
-while s_try<13:
+while True:
+    s_address='/dev/ttyACM1'
+    #s_address='COM5' #for testing directly with computer, see device manager for ur exact port
     try:
-        s_address='/dev/ttyACM0'
-        #s_address='COM5' #for testing directly with computer
-        ser = serial.Serial(s_address,115200) #name of the serial port and buad rate
+        ser = serial.Serial(s_address,115200) #name of the serial port and buadrate
+        print("Detected Serial device at "+s_address)
         break
     except:
         print("Not able to detect Serial device at "+s_address)
-        print("Please check connection to Sensortile")
-        print("Retrying in 5 Seconds")
-        time.sleep(5) #sleep for 5 seconds
-        s_try=s_try+1
-        continue
+        s_address='/dev/ttyACM0'
+        try:
+            ser = serial.Serial(s_address,115200) #name of the serial port and buad rate
+            print("Detected Serial device at "+s_address)
+            break
+        except:
+            print("Not able to detect Serial device at "+s_address)
+            print("Please check connection to Sensortile")
+            print("Retrying in 5 Seconds")
+            time.sleep(5) #sleep for 5 seconds
+            s_try=s_try+1
+            if s_try >12: #number of tries for reconnection(12)
+                sys.exit(1)
+                break
+            continue
+##
 while True:
     read_serial = ser.readline().strip()
     #list_items = []
     #print(read_serial.decode("utf-8"))
-    print(read_serial)
+    print("sensortile")
 
 
     if (read_serial[0:9] == b'TimeStamp'):
-        ts = read_serial[11:22].decode("utf-8")
+        ts = str(datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')[:-3])
         datafile = open(figg,"a")
         datafile.write('\n')
         datafile.write(ts+",")

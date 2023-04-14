@@ -34,6 +34,8 @@ bmefile_limit = 30  # every 10 mins, 1 sample per 5 secs
 mpufile_limit = 540  # every 2 mins, 18-19 samples per reading
 imagefile_limit = 4  # every 4 mins, 1 sample per 4 minute
 
+packet_gen = False
+
 gpsfile_lines = gpsfile_limit
 polfile_lines = polfile_limit
 bmefile_lines = bmefile_limit
@@ -69,7 +71,8 @@ def getserial():
     return cpuserial
 
 
-#mac = getserial()
+mac = getserial()
+print(mac)
 #command = "gsutil mv /home/pi/Pollution_Sensing_IOT/upload/" + \
 #    str(mac) + " gs://iot_01_test_dataflow/"
 # command = "gsutil mv /home/pi/Pollution_Sensing_IOT/upload/" + mac + \
@@ -93,7 +96,7 @@ def get_ts_uid(tsuid_data):
     global flag_new, flag_old, ts, uid
     header = "TS,FLAG"
     c = json.loads(tsuid_data)
-    # print(c)
+    #print(c)
     # ts = c["TS"]
     ts = str(datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S:%f')[:-7])
     flag_new = c["FLAG"]
@@ -107,14 +110,17 @@ def get_ts_uid(tsuid_data):
 
 
 def writempu(mpu_data):
-    print("writempu trigger")
+    #print(mpu_data)
     header = "AX, AY, AZ, GX, GY, GZ, deviceId, ts, uid"
     global address_prefix, mpufile, mpufile_lines, mpufile_limit, oldmpufile, uid, ts, mac
     tlast = datetime.now()
+    #print(mpufile_lines)
     if (mpufile_lines >= mpufile_limit):
+        #print("trig1")
         ltime = str(datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')[:-3])
         mpufile = ltime + 'mpu.csv'
         if(len(oldmpufile) > 1):
+            #print("trig2")
             os.rename(address_prefix+'sensordata/mpudata/'+oldmpufile,
                       address_prefix+'upload/' + str(mac) + '/mpudata/'+oldmpufile)
         oldmpufile = mpufile
@@ -126,17 +132,22 @@ def writempu(mpu_data):
             fo.write(header+"\n")
             fo.close()
     ltime = str(datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')[:-3])
+    #print("trig3")
     data = mpu_data
     c = json.loads(data)
+    #print(c)
     c['ts'] = ts
     c['uid'] = uid
     c['deviceId'] = mac
-    # print(c)
+    #print(c)
     fa = open(address_prefix+'sensordata/mpudata/'+mpufile, "a+")
+    #print("trig4")
     fa.write(str(c["AX"])+","+str(c["AY"])+","+str(c["AZ"]) +
              ","+str(c["GX"])+","+str(c["GY"])+","+str(c["GZ"])+","+str(c['deviceId'])+","+str(c['ts'])+","+str(c['uid'])+'\n')
     fa.close()
-    mpufile_lines += 1
+    
+    if packet_gen:
+        mpufile_lines += 1
 
 
 def main():
@@ -145,25 +156,26 @@ def main():
     while True:
         try:
             null_count = ''
-            read_serial = ser.readline().strip()
-            print(read_serial[2:4])
+            read_serial = ser.readline().strip().decode('ascii')
+            #print(read_serial[2:4])
+            print("poll")
             if (len(read_serial) < 10):
                 continue
-            if(read_serial[2:4] == b'TS'):
+            if(read_serial[2:4] == 'TS'):
                 get_ts_uid(read_serial)
                 continue
-            if(read_serial[2:4] == b'PM'):
+            if(read_serial[2:4] == 'PM'):
                 writepol(read_serial)
                 continue
-            if(read_serial[2:5] == b'LAT'):
+            if(read_serial[2:5] == 'LAT'):
                 writegps(read_serial)
                 continue
-            if(read_serial[2:4] == b'Pr'):
-                print("mpuread")
-                #writebme(read_serial)
+            if(read_serial[2:4] == 'Pr'):
+                #print("mpuread")
+                writebme(read_serial)
                 continue
-            if(read_serial[2:4] == b'AX'):
-                print("mpuread")
+            if(read_serial[2:4] == 'AX'):
+                #print("mpuread")
                 writempu(read_serial)
                 continue
         except:
@@ -198,11 +210,12 @@ def writegps(gps_data):
     f.write(str(c["LAT"])+","+str(c["LONG"])+"," +
             str(c['deviceId'])+","+str(c['ts'])+","+str(c['uid'])+'\n')
     f.close()
-    gpsfile_lines += 1
+    if packet_gen:
+        gpsfile_lines += 1
     #print ("Wrote a gpsdata line!")
     return
 
-
+#function to write pollution data
 def writepol(pol_data):
     header = "PM1, PM2.5, PM10, deviceId, ts, uid"
     global address_prefix, polfile, polfile_limit, polfile_lines, oldpolfile, uid, ts, mac
@@ -231,7 +244,8 @@ def writepol(pol_data):
     f.write(str(c["PM1"])+","+str(c["PM2.5"])+","+str(c["PM10"]) +
             ","+str(c['deviceId'])+","+str(c['ts'])+","+str(c['uid'])+'\n')
     f.close()
-    polfile_lines += 1
+    if packet_gen:
+        polfile_lines += 1
     #print ("Wrote a poldata line!")
     return
 
@@ -264,7 +278,8 @@ def writebme(bme_data):
     f.write(str(c["Pr"])+","+str(c["T"])+","+str(c["H"]) + "," +
             str(c['deviceId'])+","+str(c['ts'])+","+str(c['uid'])+'\n')
     f.close()
-    bmefile_lines += 1
+    if packet_gen:
+        bmefile_lines += 1
     return
 
 
