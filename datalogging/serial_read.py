@@ -78,6 +78,7 @@ while True:
                 break
             continue
 ##
+print("input loop cleared")
 while True:
     read_serial = ser.readline().strip()
     #list_items = []
