@@ -1,6 +1,6 @@
 import pandas as pd 
 import csv
-address="2023-04-15 04_44_18stile.csv"
+address="2023-04-15 14_57_58stile.csv"
 #address_prefix=
 #df = pd.read_csv("2023-04-15 04_44_18stile.csv")
 #df.head()
