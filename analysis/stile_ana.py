@@ -1,14 +1,6 @@
 import pandas as pd 
 import csv
-address="2023-04-16 08_23_51stile.csv"
-#address_prefix=
-#df = pd.read_csv("2023-04-15 04_44_18stile.csv")
-#df.head()
-#with open(address, 'r') as file:
-#  csvreader = csv.reader(file)
-
-#  for row in csvreader:
-#    print(row[0])
+address="C:/Users/mahak/Desktop/BTP-2/Working/rawdata/until_saturday_around_campus_data/Pollution_Sensing_IOT/sensordata/sensortile/2023-04-16 07_25_58stile.csv"
 
 import pandas as pd
 
