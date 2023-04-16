@@ -84,7 +84,7 @@ while True:
 
 
     if (read_serial[0:9] == b'TimeStamp'):
-        ts = str(datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')[:-3])
+        ts = str(datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f'))
         datafile = open(figg,"a")
         datafile.write('\n')
         datafile.write(ts+",")
