@@ -47,7 +47,7 @@ with open('myfile15_03_2023_010151.txt', 'r') as csvfile:
         mag_y = float(row[8])
         mag_z = float(row[9])
         baro_val = float(row[10])
-        print(type(acc_x))
+        #print(type(acc_x))
 
         acc_x_values.append(acc_x)
         acc_y_values.append(acc_y)

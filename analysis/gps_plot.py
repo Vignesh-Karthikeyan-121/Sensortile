@@ -1,9 +1,11 @@
 import pandas as pd
 import folium
-from folium.plugins import PolyLineTextPath
 
 # Read data from csv
-df = pd.read_csv('C:/Users/mahak/Desktop/BTP-2/Working/rawdata/until_saturday_around_campus_data/Pollution_Sensing_IOT/sensordata/gpsdata/2023-04-15 17_42_20_187gps.csv')
+address_prefix='C:/Users/mahak/Desktop/BTP-2/Working/rawdata/IIIT_trail1_sun/sensordata/gpsdata/'
+filename="2023-04-16 18_36_32_852gps.csv"
+print(filename[:-4])
+df = pd.read_csv(address_prefix+filename)
 
 # Drop rows with NaN values
 df.dropna(inplace=True)
@@ -30,18 +32,6 @@ path = []
 for i in range(len(lat_long)):
     path.append(lat_long[i])
     folium.PolyLine(locations=path, color='red').add_to(m)
-    
-    if i > 0:
-        PolyLineTextPath(
-            polyline=path[-2:],
-            line_color='red',
-            line_opacity=0.7,
-            line_weight=5,
-            repeat=True,
-            offset=6,
-            text="▶",
-            align='center',
-        ).add_to(m)
 
 # Save map as html file
-m.save("gps_map.html")
+m.save(filename+"_"+".html")
