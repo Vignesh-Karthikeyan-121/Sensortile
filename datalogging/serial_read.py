@@ -11,9 +11,6 @@ import time
 
 address_prefix = '/home/pi/Pollution_Sensing_IOT/sensordata/'
 #name of the file to which sensor data will be saved
-if os.path.exists("myfile.txt"):
-  os.remove("myfile.txt") # one file at a time
-
 
 #to get accel-sensor values from terminal string 
 def get_acc(acc_values):
