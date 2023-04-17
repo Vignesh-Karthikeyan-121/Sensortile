@@ -4,6 +4,15 @@
 # Ignore all text files
 *.csv
 *.txt
+*.html
+
+# Private Files
+*.json
+*.csv
+*.csv.gz
+*.tsv
+*.tsv.gz
+*.xlsx
 
 # Ignore files related to API keys
 .env
