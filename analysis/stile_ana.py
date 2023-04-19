@@ -31,7 +31,7 @@ with open(address) as f:
 
 # Convert the list of valid lines into a Pandas dataframe
 df = pd.DataFrame(lines, columns=['time', 'accel_x', 'accel_y', 'accel_z', 'gyro_x', 'gyro_y', 'gyro_z', 'mag_x', 'mag_y', 'mag_z', 'pressure'])
-print(df)
+#print(df)
 # Convert the 'time' column to datetime format
 df['time'] = pd.to_datetime(df['time'], format='%Y-%m-%d %H:%M:%S:%f')
 

@@ -3,10 +3,11 @@ import folium
 
 # Read data from csv
 address_prefix='C:/Users/mahak/Desktop/BTP-2/Working/rawdata/IIIT_trail1_sun/sensordata/gpsdata/'
-filename="2023-04-16 18_36_32_852gps.csv"
-print(filename[:-4])
+filename="2023-04-16 08_50_34_182gps.csv"
+#print(filename[:-4])
 df = pd.read_csv(address_prefix+filename)
-
+df = df[0:2]
+print(df)
 # Drop rows with NaN values
 df.dropna(inplace=True)
 
@@ -34,4 +35,4 @@ for i in range(len(lat_long)):
     folium.PolyLine(locations=path, color='red').add_to(m)
 
 # Save map as html file
-m.save(filename+"_"+".html")
+m.save(filename+"_plot"+".html")

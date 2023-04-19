@@ -13,6 +13,7 @@
 *.tsv
 *.tsv.gz
 *.xlsx
+trial.py
 
 # Ignore files related to API keys
 .env
