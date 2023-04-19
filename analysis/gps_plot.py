@@ -6,7 +6,7 @@ address_prefix='C:/Users/mahak/Desktop/BTP-2/Working/rawdata/IIIT_trail1_sun/sen
 filename="2023-04-16 08_50_34_182gps.csv"
 #print(filename[:-4])
 df = pd.read_csv(address_prefix+filename)
-df = df[0:2]
+df = df[13:57]
 print(df)
 # Drop rows with NaN values
 df.dropna(inplace=True)
