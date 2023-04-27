@@ -70,6 +70,7 @@ while i < len(data)-window_size:
         temp_np=np.reshape(temp_np, 9*window_size, order='F')
         print("----------------------------------------------------------")
         #print(temp_np)
+        temp_np=np.append(temp_np,[current_label])
         if len(main_np)==0:
             #print("hit")
             main_np=temp_np
@@ -83,6 +84,7 @@ print(main_np)
 #print(type(main_np))
 print(main_np.shape)
 #main_np.tofile('resized_data.csv', sep=',')
+
 with open('resized_data.csv', 'w', newline='') as f:
     writer = csv.writer(f)
     for row in main_np:
