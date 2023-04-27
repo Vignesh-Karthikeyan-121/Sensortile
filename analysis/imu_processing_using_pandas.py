@@ -34,7 +34,7 @@ with open(data) as f:
 
 # Read the CSV file using pandas
 data = pd.DataFrame(lines, columns=['time', 'accel_x', 'accel_y', 'accel_z', 'gyro_x', 'gyro_y', 'gyro_z', 'mag_x', 'mag_y', 'mag_z', 'pressure'])
-data = data[71229:72082]
+data = data[53550:55050]
 
 # num_columns = 12 # There should be 12 columns in the df.
 
@@ -78,6 +78,7 @@ print(f"Average Accelerometer Z: {acc_z_avg}")
 print(f"Average Gyroscope X: {gyro_x_avg}")
 print(f"Average Gyroscope Y: {gyro_y_avg}")
 print(f"Average Gyroscope Z: {gyro_z_avg}")
+print(len(data))
 
 # Create a time axis for the data
 time_axis = pd.Series(range(len(acc_x_values)))
@@ -99,16 +100,19 @@ acc_x_values = pd.Series(acc_x_values)
 
 # adding extra simple hueristic processing on individual series
 
-acc_net_sma = acc_net.rolling(window=30).mean()
+acc_net_sma = acc_net.rolling(window=10).mean()
+gyro_x_sma = gyro_x_values.rolling(window=5).mean()
+gyro_y_sma = gyro_y_values.rolling(window=5).mean()
+gyro_z_sma = gyro_z_values.rolling(window=5).mean()
 
 # Plot the accelerometer data
 
 plt.figure()
-#plt.plot(time_axis.values, acc_x_values.values, label='Accelerometer X')
-#plt.plot(time_axis.values, acc_y_values.values, label='Accelerometer Y')
+plt.plot(time_axis.values, acc_x_values.values, label='Accelerometer X')
+plt.plot(time_axis.values, acc_y_values.values, label='Accelerometer Y')
 
-#plt.plot(time_axis.values, acc_z_values.values, label='Accelerometer Z')
-#plt.plot(time_axis.values, acc_net.values, label='Accelerometer NET')
+plt.plot(time_axis.values, acc_z_values.values, label='Accelerometer Z')
+plt.plot(time_axis.values, acc_net.values, label='Accelerometer NET')
 plt.plot(time_axis.values, acc_net_sma.values, label='Accelerometer NET SMA')
 plt.xlabel('data points')
 plt.ylabel('Acceleration')
@@ -117,14 +121,17 @@ plt.legend()
 
 # Plot the gyroscope data
 plt.figure()
-plt.plot(time_axis.values, gyro_x_values.values, label='Gyroscope X')
-plt.plot(time_axis.values, gyro_y_values.values, label='Gyroscope Y')
-plt.plot(time_axis.values, gyro_z_values.values, label='Gyroscope Z')
+#plt.plot(time_axis.values, gyro_x_values.values, label='Gyroscope X')
+plt.plot(time_axis.values, gyro_x_sma.values, label='Gyroscope X SMA')
+#plt.plot(time_axis.values, gyro_y_values.values, label='Gyroscope Y')
+plt.plot(time_axis.values, gyro_y_sma.values, label='Gyroscope Y SMA')
+#plt.plot(time_axis.values, gyro_z_values.values, label='Gyroscope Z')
+plt.plot(time_axis.values, gyro_z_sma.values, label='Gyroscope Z SMA')
 plt.xlabel('data points')
 plt.ylabel('Gyroscope')
 plt.title('Gyroscope Data')
 plt.legend()
-
+plt.show()
 # Plot the magnetometer data
 plt.figure()
 plt.plot(time_axis.values, mag_x_values.values, label='COMP X')
@@ -134,6 +141,7 @@ plt.xlabel('data points')
 plt.ylabel('Magnetometer')
 plt.title('Magnetometer Data')
 plt.legend()
+# Show the plots
 
 # Plot the Barometer data
 plt.figure()
@@ -143,5 +151,4 @@ plt.ylabel('Pressure (KPa)')
 plt.title('Pressure Data')
 plt.legend()
 
-# Show the plots
-plt.show()
+
