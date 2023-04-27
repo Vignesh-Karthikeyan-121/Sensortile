@@ -51,8 +51,8 @@ j=0
 
 #exit()
 #main_np = np.empty((0,9*window_size), int)
-main_np = [[]]
-print(len(main_np[0]))
+main_np = np.empty((0, 9*window_size))
+#print(len(main_np[0]))
 while i < len(data)-window_size:
     row=data.iloc[i]
     current_label = row['label']
@@ -69,23 +69,22 @@ while i < len(data)-window_size:
         #print(temp_np)
         temp_np=np.reshape(temp_np, 9*window_size, order='F')
         print("----------------------------------------------------------")
-        print(temp_np)
-        if len(main_np[0])==0:
-            print("hit")
+        #print(temp_np)
+        if len(main_np)==0:
+            #print("hit")
             main_np=temp_np
         else:
             print(main_np)
             print(main_np.shape)
             print(temp_np.shape)
-            main_np=np.append([main_np],[temp_np],axis=0)
+            main_np = np.vstack([main_np, temp_np])
         i=i+window_size
 print(main_np)
-print(type(main_np))
-print(main_np.size)
-main_np.tofile('resized_data.csv', sep=',')
-
-
-
-
-
+#print(type(main_np))
+print(main_np.shape)
+#main_np.tofile('resized_data.csv', sep=',')
+with open('resized_data.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    for row in main_np:
+        writer.writerow(row)
 exit()
