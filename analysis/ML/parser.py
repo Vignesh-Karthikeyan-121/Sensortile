@@ -79,7 +79,7 @@ while i < len(data)-window_size:
             print(main_np.shape)
             print(temp_np.shape)
             main_np = np.vstack([main_np, temp_np])
-        i=i+window_size
+        i=i+1
 print(main_np)
 #print(type(main_np))
 print(main_np.shape)
