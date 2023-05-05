@@ -10,7 +10,7 @@ public class SerialReader implements SerialPortEventListener {
     private boolean isWriting = false;
 
     public static void main(String[] args) throws Exception {
-        String portName = "/dev/ttyUSB0"; // change this to match your port name
+        String portName = "/dev/ttyACM0"; // change this to match your port name
         int baudRate = 9600; // change this to match your device's baud rate
 
         SerialReader reader = new SerialReader();
