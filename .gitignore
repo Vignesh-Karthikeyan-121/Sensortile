@@ -2,9 +2,9 @@
 .DS_store
 
 # Ignore all text files
-*.csv
-*.txt
-*.html
+#*.csv
+#*.txt
+#*.html
 
 # Private Files
 *.json

@@ -34,7 +34,7 @@ with open(data) as f:
 
 # Read the CSV file using pandas
 data = pd.DataFrame(lines, columns=['time', 'accel_x', 'accel_y', 'accel_z', 'gyro_x', 'gyro_y', 'gyro_z', 'mag_x', 'mag_y', 'mag_z', 'pressure'])
-data = data[53550:55050]
+data = data[28628:29228]
 
 # num_columns = 12 # There should be 12 columns in the df.
 
@@ -100,7 +100,7 @@ acc_x_values = pd.Series(acc_x_values)
 
 # adding extra simple hueristic processing on individual series
 
-acc_net_sma = acc_net.rolling(window=10).mean()
+acc_net_sma = acc_net.rolling(window=5).mean()
 gyro_x_sma = gyro_x_values.rolling(window=5).mean()
 gyro_y_sma = gyro_y_values.rolling(window=5).mean()
 gyro_z_sma = gyro_z_values.rolling(window=5).mean()
@@ -112,7 +112,7 @@ plt.plot(time_axis.values, acc_x_values.values, label='Accelerometer X')
 plt.plot(time_axis.values, acc_y_values.values, label='Accelerometer Y')
 
 plt.plot(time_axis.values, acc_z_values.values, label='Accelerometer Z')
-plt.plot(time_axis.values, acc_net.values, label='Accelerometer NET')
+#plt.plot(time_axis.values, acc_net.values, label='Accelerometer NET')
 plt.plot(time_axis.values, acc_net_sma.values, label='Accelerometer NET SMA')
 plt.xlabel('data points')
 plt.ylabel('Acceleration')
@@ -131,7 +131,7 @@ plt.xlabel('data points')
 plt.ylabel('Gyroscope')
 plt.title('Gyroscope Data')
 plt.legend()
-plt.show()
+
 # Plot the magnetometer data
 plt.figure()
 plt.plot(time_axis.values, mag_x_values.values, label='COMP X')
@@ -150,5 +150,6 @@ plt.xlabel('data points')
 plt.ylabel('Pressure (KPa)')
 plt.title('Pressure Data')
 plt.legend()
+plt.show()
 
 

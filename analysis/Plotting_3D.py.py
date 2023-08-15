@@ -14,7 +14,7 @@ import math
 import numpy as np
 
 # Load data
-data = "2023-04-16 08_48_02stile.csv"
+data = "C:/Users/mahak/Desktop/BTP-2/Working/rawdata/IIIT_trail1_sun/sensordata/sensortile/2023-04-16 08_48_02stile.csv"
 expected_columns = 11
 
 lines = []

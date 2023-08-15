@@ -1,6 +1,6 @@
 import pandas as pd 
 import csv
-address="C:/Users/mahak/Desktop/BTP-2/Working/rawdata/until_saturday_around_campus_data/Pollution_Sensing_IOT/sensordata/sensortile/2023-04-16 07_25_58stile.csv"
+address="C:/Users/mahak/Desktop/BTP-2/Working/rawdata/IIIT_trail1_sun/sensordata/sensortile/2023-04-16 08_48_02stile.csv"
 
 import pandas as pd
 

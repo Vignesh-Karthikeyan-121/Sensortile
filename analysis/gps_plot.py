@@ -8,7 +8,7 @@ address_prefix='C:/Users/mahak/Desktop/BTP-2/Working/rawdata/IIIT_trail1_sun/sen
 filename="2023-04-16 08_50_34_182gps.csv"
 #print(filename[:-4])
 df = pd.read_csv(address_prefix+filename)
-df = df[190:]
+df = df[78:85]
 print(df)
 # Drop rows with NaN values
 df.dropna(inplace=True)
@@ -52,6 +52,9 @@ for i in range(len(lat_long)):
 #              popup=f"Time: {df.iloc[-1][' ts']}<br>Lat: {df.iloc[-1]['LAT']}<br>Long: {df.iloc[-1][' LONG']}",
 #              icon=folium.Icon(color='green')).add_to(m)
 
+m.save(filename+"_plot"+".html")
+
+#exit()
 events = "C:/Users/mahak/Desktop/BTP-2/Working/rawdata/events.csv"
 df = pd.read_csv(events)
 for index, row in df.iterrows():
